@@ -1,1 +1,1 @@
-# TEMPLATE REPOSITORY 
+# Cowgirl AI Core
