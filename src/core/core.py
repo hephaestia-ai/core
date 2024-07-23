@@ -114,7 +114,7 @@ class Core(ConfigOpenAI):
 
 if __name__=="__main__":
 
-    """     # pylint disable=pointless-string-statement
+    """   
     Configure your vector, assistant, directory and extension.
     + Assistant should be created ahead of time if not already done so. 
     + If the vector already exists, it will not be created. 
