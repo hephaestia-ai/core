@@ -9,7 +9,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 cloudpathlib==0.18.1
 confection==0.1.5
-cowgirl-ai==1.0.24
+cowgirl-ai==1.1.0
 cymem==2.0.8
 dill==0.3.8
 distro==1.9.0
