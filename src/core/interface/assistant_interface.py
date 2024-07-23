@@ -45,5 +45,3 @@ class AssistantInterface(CoreAssistant):
 
 if __name__=="__main__":
     AssistantInterface()
-    # interface = AssistantInterface(assistant_name='Data Generation Assistant v2')
-    # interface.stream_data()
