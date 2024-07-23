@@ -96,12 +96,12 @@ if __name__=="__main__":
     CoreAssistant()
 
     # EXAMPLE USAGE
-    core_assistant = CoreAssistant(assistant_name="Cover Letter Writing Assistant")
+    # core_assistant = CoreAssistant(assistant_name="Cover Letter Writing Assistant")
     
     # CREATING:
-    core_assistant.create_new_assistant()
-    core_assistant.get_assistant_attributes(limit=1)
-    print(core_assistant.assistant_attributes)
+    # core_assistant.create_new_assistant()
+    # core_assistant.get_assistant_attributes(limit=1)
+    # print(core_assistant.assistant_attributes)
 
     # DELETING:
     # core_assistant.delete()

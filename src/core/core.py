@@ -9,7 +9,7 @@ import logging
 import time
 
 
-logging.basicConfig(level=logging.INFO, dtfmt="%Y-%m-%d", format="%(levelname)s - %(asctime)s - %(message)s")
+logging.basicConfig(level=logging.INFO, datefmt="%Y-%m-%d", format="%(levelname)s - %(asctime)s - %(message)s")
 
 class Core(ConfigOpenAI): 
     """
@@ -90,7 +90,6 @@ class Core(ConfigOpenAI):
             logging.info(f"Issue making API request {error}")
         return success
 
-    @error_handler
     def __process_files(self, directory, extension):
         """
         Note: the file has to contain information. Doesn't take empty files
@@ -98,9 +97,14 @@ class Core(ConfigOpenAI):
         """ 
             
         file_search = Search() # TBD: replace with args? CLI entry point
-        file_search.search(directory=directory, file_ext=extension)
-        file_paths = file_search.data # Stack obj
-        return file_paths
+        try:
+            file_search.search(directory=directory, file_ext=extension)
+            file_paths = file_search.data # Stack obj
+            logging.debug(f"Found {file_search.data}")
+            return file_paths
+        except Exception as err:
+            logging.error(f"Issue loading files, see {err}")
+       
     
     @error_handler
     def upload_files_to_vector(self, directory, extension, vector_name):
@@ -128,7 +132,7 @@ if __name__=="__main__":
     """
 
     Core()
-    
+
     # EXAMPLE USAGE:
 
     # vector_name='Data Generation Assistant Vector Store'
