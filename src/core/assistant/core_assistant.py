@@ -15,13 +15,11 @@ class CoreAssistant(ConfigOpenAI):
         super().__init__()
         self.name = assistant_name       # Name of the assistant
         self.model = "gpt-4o-mini"       # Required (try gpt-4o-mini)
-        # self.response_format = { "type": "json_object" } 
-        self.response_format='auto'
+        self.response_format='auto' #{ "type": "json_object" } 
         self.description = None   
         self.instructions = None
         self.temperature = 0.1   
-        self.tools=[{"type": "file_search"}] # pylint disable=trailing-comma-tuple
-        # self.tool_resources={"file_search": {"vector_store_ids": [f'{None}']}} 
+        self.tools=[{"type": "code_interpreter"}] # pylint disable=trailing-comma-tuple
         self.assistant_attributes = {}
 
     def get_assistant_attributes(self, limit=None):
@@ -68,10 +66,8 @@ class CoreAssistant(ConfigOpenAI):
                 instructions=self.set_base_instructions(), 
                 temperature=self.temperature,
                 response_format=self.response_format,
-                tools=self.tools,
-                # tool_resources=self.tool_resources
+                tools=self.tools
             )
-            # return response
         except Exception as err: 
             logging.info(f"Issue creating assistant, see error: {err}")
 

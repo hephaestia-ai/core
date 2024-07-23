@@ -36,7 +36,6 @@ if __name__=="__main__":
     # CONFIG
     VECTOR_NAME = 'CI - Cover Letter Generation Vector Store'
     ASSISTANT_NAME = 'Cover Letter Generation Assistant' # Pre-existing
-    ASSISTANT_ID = 'asst_XPA3DP541yQxQvBEPqcI5FE1'
 
     FILE_SEARCH_DIRECTORY = os.path.join(os.getcwd(), 'src/cover_letter_generation/file_search')
     EXTENSION = ".py"
@@ -45,7 +44,7 @@ if __name__=="__main__":
 
     generate(
         assistant_name=ASSISTANT_NAME, 
-        assistant_id=ASSISTANT_ID, 
+        assistant_id=None, 
         has_attachement=True, 
         file_path=os.path.join(FILE_SEARCH_DIRECTORY, 'assistant_constants.py')
     )
