@@ -10,8 +10,7 @@ class ConfigBigQuery:
     Configures a BigQuery client using the default Google Cloud credentials.
     This class is used to set up the necessary BigQuery client for interacting with BigQuery in the application.
     """
-    def __init__(self):
-        
+    def __init__(self):    
         self.credentials, self.project_id = google.auth.default()
         self.client = bigquery.Client(project=self.project_id, credentials=self.credentials)
 
