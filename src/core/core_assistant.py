@@ -1,6 +1,7 @@
 from src.config import ConfigOpenAI
 import logging 
 
+# logging.basicConfig(level=logging.DEBUG)
 class CoreAssistant(ConfigOpenAI):
     """
     Core Assistant
@@ -18,7 +19,7 @@ class CoreAssistant(ConfigOpenAI):
         self.description = None   
         self.instructions = None
         self.temperature = 0.1   
-        self.tools=[{"type": "code_interpreter"}] # pylint disable=trailing-comma-tuple
+        # self.tools=[{"type": "code_interpreter"}] # pylint disable=trailing-comma-tuple
         # self.tool_resources={"file_search": {"vector_store_ids": [f'{None}']}} #TODO 
         self.assistant_attributes = {}
 
@@ -46,32 +47,43 @@ class CoreAssistant(ConfigOpenAI):
 
     def create_new_assistant(self):
         try:
-            self.client.beta.assistants.create(
+            response = self.client.beta.assistants.create(
                 model=self.model, 
                 name=self.name,
                 description=self.set_base_description(),
                 instructions=self.set_base_instructions(), 
                 temperature=self.temperature,
                 response_format=self.response_format,
-                tools=self.tools,
+                # tools=self.tools,
                 # tool_resources=self.tool_resources
             )
+            return response
         except Exception as err: 
             logging.info(f"Issue creating assistant, see error: {err}")
 
-    def delete(self, assistant_id):
+    def delete(self):
         """
         TODO: buff this out
         """
-
-        response = self.client.beta.assistants.delete(assistant_id=assistant_id)
-        return response
-
+        self.get_assistant_attributes()
+        assistant_data = self.assistant_attributes.get(f'{self.name}')
+        
+        success = False
+        if assistant_data is None: 
+            logging.debug(f"{self.name} doesn't exist")
+        else:
+            command = input(f'Are you sure you would like to delete {self.name}? (y/N) ')
+            if command == 'y':
+                self.client.beta.assistants.delete(assistant_id=assistant_data.get('id'))
+                success = True 
+                logging.debug(f"{self.name} deleted.")
+        return success 
+    
 if __name__=="__main__":
     CoreAssistant()
 
     # EXAMPLE USAGE
-    # core_assistant = CoreAssistant(assistant_name="Data Generation Assistant v2")
+    core_assistant = CoreAssistant(assistant_name="Data Generation Assistant v2")
     
     # CREATING:
     # core_assistant.create_new_assistant()
@@ -79,6 +91,6 @@ if __name__=="__main__":
     # print(core_assistant.assistant_attributes)
 
     # DELETING:
-    # core_assistant.delete("asst_TT7W3hhIhs53naQRUR2paKuI")
+    # core_assistant.delete()
     # core_assistant.get_assistant_attributes(limit=1)
     # print(core_assistant.assistant_attributes)
