@@ -20,7 +20,7 @@ class CoreAssistant(ConfigOpenAI):
         self.instructions = None
         self.temperature = 0.1   
         # self.tools=[{"type": "code_interpreter"}] # pylint disable=trailing-comma-tuple
-        # self.tool_resources={"file_search": {"vector_store_ids": [f'{None}']}} #TODO 
+        # self.tool_resources={"file_search": {"vector_store_ids": [f'{None}']}} 
         self.assistant_attributes = {}
 
     def get_assistant_attributes(self, limit=None):
@@ -35,10 +35,18 @@ class CoreAssistant(ConfigOpenAI):
             self.assistant_attributes[assistant_name] = assistant.__dict__
 
     def set_base_description(self):
+        """
+        Provide base description to the core assistant class.
+        """
+
         description = 'You are a data generation assistant'
         return description 
     
     def set_base_instructions(self):
+        """
+        Provide a set of base instructions to the core assistant class.
+        """
+        
         instructions = ''' 
             Your duties are to generate data and output the data itself as a JSON object. Please keep 
             as structured as possible for easy data cleaning. o extra chat or text needed, keep it just the results.
@@ -46,6 +54,11 @@ class CoreAssistant(ConfigOpenAI):
         return instructions
 
     def create_new_assistant(self):
+        """
+        Makes an API call with the core assistant attributes 
+        Returns response for future message / user prompting
+        """
+
         try:
             response = self.client.beta.assistants.create(
                 model=self.model, 
@@ -63,12 +76,11 @@ class CoreAssistant(ConfigOpenAI):
 
     def delete(self):
         """
-        TODO: buff this out
+        Delete an assistant based on the provided assistant name. 
         """
+        success = False
         self.get_assistant_attributes()
         assistant_data = self.assistant_attributes.get(f'{self.name}')
-        
-        success = False
         if assistant_data is None: 
             logging.debug(f"{self.name} doesn't exist")
         else:
