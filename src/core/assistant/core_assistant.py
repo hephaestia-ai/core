@@ -15,14 +15,14 @@ class CoreAssistant(ConfigOpenAI):
         super().__init__()
         self.name = assistant_name       # Name of the assistant
         self.model = "gpt-4o-mini"       # Required (try gpt-4o-mini)
-        self.response_format = { "type": "json_object" } 
+        # self.response_format = { "type": "json_object" } 
+        self.response_format='auto'
         self.description = None   
         self.instructions = None
         self.temperature = 0.1   
-        # self.tools=[{"type": "code_interpreter"}] # pylint disable=trailing-comma-tuple
+        self.tools=[{"type": "file_search"}] # pylint disable=trailing-comma-tuple
         # self.tool_resources={"file_search": {"vector_store_ids": [f'{None}']}} 
         self.assistant_attributes = {}
-        self.content = ""
 
     def get_assistant_attributes(self, limit=None):
         """
@@ -40,7 +40,7 @@ class CoreAssistant(ConfigOpenAI):
         Provide base description to the core assistant class.
         """
 
-        description = 'You are a data generation assistant'
+        description = 'You are a cover letter writing assistant'
         return description 
     
     def set_base_instructions(self):
@@ -49,20 +49,10 @@ class CoreAssistant(ConfigOpenAI):
         """
         
         instructions = ''' 
-            Your duties are to generate data and output the data itself as a JSON object. Please keep 
-            as structured as possible for easy data cleaning. No extra chat or text needed, keep it just the results.
+            Your duties are to process provided job description from the user
+            and write a targeted cover letter to bypass ats that is also tailored to their skill set. 
         '''
         return instructions
-
-    def set_prompt(self):
-        """
-        Take user input for passing as prompt. 
-        Combine with json-object so GPT knows to output a jsonl file 
-        """
-
-        user_input = input()
-        full = user_input + "output as json object"
-        self.content += full
 
     def create_new_assistant(self):
         """
@@ -71,17 +61,17 @@ class CoreAssistant(ConfigOpenAI):
         """
 
         try:
-            response = self.client.beta.assistants.create(
+            self.client.beta.assistants.create(
                 model=self.model, 
                 name=self.name,
                 description=self.set_base_description(),
                 instructions=self.set_base_instructions(), 
                 temperature=self.temperature,
                 response_format=self.response_format,
-                # tools=self.tools,
+                tools=self.tools,
                 # tool_resources=self.tool_resources
             )
-            return response
+            # return response
         except Exception as err: 
             logging.info(f"Issue creating assistant, see error: {err}")
 
@@ -106,12 +96,12 @@ if __name__=="__main__":
     CoreAssistant()
 
     # EXAMPLE USAGE
-    # core_assistant = CoreAssistant(assistant_name="Data Generation Assistant v2")
+    core_assistant = CoreAssistant(assistant_name="Cover Letter Writing Assistant")
     
     # CREATING:
-    # core_assistant.create_new_assistant()
-    # core_assistant.get_assistant_attributes(limit=1)
-    # print(core_assistant.assistant_attributes)
+    core_assistant.create_new_assistant()
+    core_assistant.get_assistant_attributes(limit=1)
+    print(core_assistant.assistant_attributes)
 
     # DELETING:
     # core_assistant.delete()

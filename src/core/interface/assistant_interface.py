@@ -6,6 +6,17 @@ class AssistantInterface(CoreAssistant):
     """
     def __init__(self, assistant_name=None):
         super().__init__(assistant_name=None)
+        self.content = ""
+
+    def set_prompt(self):
+        """
+        Take user input for passing as prompt. 
+        Combine with json-object so GPT knows to output a jsonl file 
+        """
+
+        user_input = input()
+        full = user_input # + "output as json object"
+        self.content += full
 
     def stream_data(self):
         """
