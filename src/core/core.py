@@ -92,6 +92,11 @@ class Core(ConfigOpenAI):
 
     @error_handler
     def __process_files(self, directory, extension):
+        """
+        Note: the file has to contain information. Doesn't take empty files
+        TODO: Add check for no data.
+        """ 
+            
         file_search = Search() # TBD: replace with args? CLI entry point
         file_search.search(directory=directory, file_ext=extension)
         file_paths = file_search.data # Stack obj
@@ -113,7 +118,7 @@ class Core(ConfigOpenAI):
         vector_interactions.upload_files(file_paths=file_paths)
 
 if __name__=="__main__":
-
+    
     """   
     Configure your vector, assistant, directory and extension.
     + Assistant should be created ahead of time if not already done so. 
@@ -121,13 +126,17 @@ if __name__=="__main__":
     + Note: The vector only takes the 'latest' created vector.
     + Directory + ext should contain the full file path and all files you wish to upload
     """
+
+    Core()
+    
     # EXAMPLE USAGE:
 
-    vector_name='Cover Letter Generation Vector Store'
-    assistant_name='Cover Letter Generation Assistant'
-    directory = "/Users/teraearlywine/Desktop/Resumes/cover_letters/"
-    extension = ".docx"
+    # vector_name='Data Generation Assistant Vector Store'
+    # assistant_name='Data Generation Assistant v2'
+    # directory = "/Users/teraearlywine/Cowgirl-AI/core/src/data_generation"
+    # extension = "py"
     
-    core = Core()
-    core.upload_files_to_vector(directory, extension, vector_name)
-    core.update_assistant_to_use_vector(assistant_name, vector_name)
+    # core = Core()
+    # core.create_new_assistant(assistant_name)
+    # core.update_assistant_to_use_vector(assistant_name, vector_name)
+    # core.upload_files_to_vector(directory, extension, vector_name)
