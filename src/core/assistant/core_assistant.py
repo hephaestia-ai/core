@@ -14,7 +14,7 @@ class CoreAssistant(ConfigOpenAI):
     def __init__(self, assistant_name=None):
         super().__init__()
         self.name = assistant_name       # Name of the assistant
-        self.model = "gpt-4o"            # Required (try gpt-4o-mini)
+        self.model = "gpt-4o"       # Required (try gpt-4o-mini)
         self.response_format = { "type": "json_object" } 
         self.description = None   
         self.instructions = None
