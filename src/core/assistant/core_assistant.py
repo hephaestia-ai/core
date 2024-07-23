@@ -14,7 +14,7 @@ class CoreAssistant(ConfigOpenAI):
     def __init__(self, assistant_name=None):
         super().__init__()
         self.name = assistant_name       # Name of the assistant
-        self.model = "gpt-4o"       # Required (try gpt-4o-mini)
+        self.model = "gpt-4o-mini"       # Required (try gpt-4o-mini)
         self.response_format = { "type": "json_object" } 
         self.description = None   
         self.instructions = None
@@ -22,6 +22,7 @@ class CoreAssistant(ConfigOpenAI):
         # self.tools=[{"type": "code_interpreter"}] # pylint disable=trailing-comma-tuple
         # self.tool_resources={"file_search": {"vector_store_ids": [f'{None}']}} 
         self.assistant_attributes = {}
+        self.content = ""
 
     def get_assistant_attributes(self, limit=None):
         """
@@ -49,9 +50,14 @@ class CoreAssistant(ConfigOpenAI):
         
         instructions = ''' 
             Your duties are to generate data and output the data itself as a JSON object. Please keep 
-            as structured as possible for easy data cleaning. o extra chat or text needed, keep it just the results.
+            as structured as possible for easy data cleaning. No extra chat or text needed, keep it just the results.
         '''
         return instructions
+
+    def set_prompt(self):
+        user_input = input()
+        full = user_input + "output as json object"
+        self.content += full
 
     def create_new_assistant(self):
         """
