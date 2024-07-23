@@ -4,7 +4,7 @@ class AssistantInterface(CoreAssistant):
     """
     Assistant Interface
     """
-    def __init__(self):
+    def __init__(self, assistant_name=None):
         super().__init__(assistant_name=None)
 
     def stream_data(self):
@@ -28,8 +28,11 @@ class AssistantInterface(CoreAssistant):
         )
         for chunk in stream:
             if chunk.choices[0].delta.content is not None:
+                # Add clause to write to file or database
                 print(chunk.choices[0].delta.content, end="")
 
 
 if __name__=="__main__":
     AssistantInterface()
+    # interface = AssistantInterface(assistant_name='Data Generation Assistant v2')
+    # interface.stream_data()
