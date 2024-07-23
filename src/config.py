@@ -3,8 +3,6 @@ import google.auth
 from google.cloud import bigquery
 from openai import OpenAI
 
-# Load environment variables from .env file
-
 class ConfigBigQuery:
     """
     Configures a BigQuery client using the default Google Cloud credentials.
