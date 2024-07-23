@@ -83,7 +83,7 @@ if __name__=="__main__":
     CoreAssistant()
 
     # EXAMPLE USAGE
-    core_assistant = CoreAssistant(assistant_name="Data Generation Assistant v2")
+    # core_assistant = CoreAssistant(assistant_name="Data Generation Assistant v2")
     
     # CREATING:
     # core_assistant.create_new_assistant()
