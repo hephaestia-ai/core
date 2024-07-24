@@ -15,17 +15,20 @@ fi
 }
 
 build() {
+    echo "Starting to build project..."
     python -m build 
     echo "Project built" 
 }
 
 upload() {
+    echo "Uploading to twine and publishing github release..."
     twine upload dist/*
     gh release create v$1 dist/*.tar.gz
     echo "Github release published" 
 }
 
 cleanup() {
+    echo "Cleaning up dist/* files"
     rm dist/*
 }
 
