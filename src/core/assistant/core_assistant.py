@@ -1,3 +1,4 @@
+from cowgirl_ai.error_handler import error_handler
 from config import ConfigOpenAI
 import logging
 
@@ -8,6 +9,7 @@ class CoreAssistant(ConfigOpenAI):
     Define core assistant properties for easy replication.
     """
 
+    @error_handler
     def __init__(self, assistant_name=None):
         super().__init__()
         self.name = assistant_name
@@ -19,6 +21,7 @@ class CoreAssistant(ConfigOpenAI):
         self.description = None
         self.instructions = None
 
+    @error_handler
     def get_assistant_attributes(self, limit=None):
         """
         Retrieve attributes assigned to each assistant.
@@ -26,6 +29,7 @@ class CoreAssistant(ConfigOpenAI):
         assistants = self.client.beta.assistants.list(limit=limit, order="desc")
         self.assistant_attributes = {assistant.name: assistant.__dict__ for assistant in assistants.data}
 
+    @error_handler
     def create_new_assistant(self):
         """
         Create a new assistant with core attributes.
@@ -43,6 +47,7 @@ class CoreAssistant(ConfigOpenAI):
         except Exception as err:
             logging.info(f"Issue creating assistant, see error: {err}")
 
+    @error_handler
     def delete_assistant(self):
         """
         Delete an assistant based on the provided assistant name.
@@ -60,4 +65,4 @@ class CoreAssistant(ConfigOpenAI):
         return False
 
 if __name__ == "__main__":
-    core_assistant = CoreAssistant("Cover Letter Writing Assistant")
+    CoreAssistant()

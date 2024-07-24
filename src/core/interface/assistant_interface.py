@@ -1,3 +1,4 @@
+from cowgirl_ai.error_handler import error_handler
 from core.assistant.core_assistant import CoreAssistant
 import logging
 
@@ -12,12 +13,14 @@ class AssistantInterface(CoreAssistant):
         self.assistant_id = assistant_id
         self.content = ""
 
+    @error_handler
     def set_prompt(self):
         """
         Take user input for passing as prompt.
         """
         self.content += input('Please provide a prompt to the assistant:')
-
+    
+    @error_handler
     def stream_data(self):
         """
         Stream data to the assistant.
@@ -32,6 +35,7 @@ class AssistantInterface(CoreAssistant):
             if chunk.choices[0].delta.content:
                 print(chunk.choices[0].delta.content, end="")
 
+    @error_handler
     def stream_data_with_file_attachment(self, file_path):
         """
         Stream data with a file attachment to the assistant.
