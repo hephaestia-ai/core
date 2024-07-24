@@ -1,105 +1,66 @@
 from src.config import ConfigOpenAI
-import logging 
+import logging
 
-# logging.basicConfig(level=logging.DEBUG)
 class CoreAssistant(ConfigOpenAI):
     """
     Core Assistant
     --------------
-
-    Define core assistant properties for easy replication. 
-    "Create Assistant" -> tbd
+    Define core assistant properties for easy replication.
     """
 
     def __init__(self, assistant_name=None):
         super().__init__()
-        self.name = assistant_name       # Name of the assistant
-        self.model = "gpt-4o-mini"       # Required (try gpt-4o-mini)
-        self.response_format='auto' #{ "type": "json_object" } 
-        self.description = None   
-        self.instructions = None
-        self.temperature = 0.1   
-        self.tools=[{"type": "code_interpreter"}] # pylint disable=trailing-comma-tuple
+        self.name = assistant_name
+        self.model = "gpt-4o-mini"
+        self.response_format = 'auto'
+        self.description = 'You are a cover letter writing assistant'
+        self.instructions = (
+            "Your duties are to process provided job description from the user "
+            "and write a targeted cover letter to bypass ATS that is also tailored to their skill set."
+        )
+        self.temperature = 0.1
+        self.tools = [{"type": "code_interpreter"}]
         self.assistant_attributes = {}
 
     def get_assistant_attributes(self, limit=None):
         """
-        Makes an API call to assistants feature
-        and returns attributes assigned to each assistant using the name as the key.
-
+        Retrieve attributes assigned to each assistant.
         """
         assistants = self.client.beta.assistants.list(limit=limit, order="desc")
-        for assistant in assistants.data:
-            assistant_name = assistant.name 
-            self.assistant_attributes[assistant_name] = assistant.__dict__
-
-    def set_base_description(self):
-        """
-        Provide base description to the core assistant class.
-        """
-
-        description = 'You are a cover letter writing assistant'
-        return description 
-    
-    def set_base_instructions(self):
-        """
-        Provide a set of base instructions to the core assistant class.
-        """
-        
-        instructions = ''' 
-            Your duties are to process provided job description from the user
-            and write a targeted cover letter to bypass ats that is also tailored to their skill set. 
-        '''
-        return instructions
+        self.assistant_attributes = {assistant.name: assistant.__dict__ for assistant in assistants.data}
 
     def create_new_assistant(self):
         """
-        Makes an API call with the core assistant attributes 
-        Returns response for future message / user prompting
+        Create a new assistant with core attributes.
         """
-
         try:
             self.client.beta.assistants.create(
-                model=self.model, 
+                model=self.model,
                 name=self.name,
-                description=self.set_base_description(),
-                instructions=self.set_base_instructions(), 
+                description=self.description,
+                instructions=self.instructions,
                 temperature=self.temperature,
                 response_format=self.response_format,
                 tools=self.tools
             )
-        except Exception as err: 
+        except Exception as err:
             logging.info(f"Issue creating assistant, see error: {err}")
 
-    def delete(self):
+    def delete_assistant(self):
         """
-        Delete an assistant based on the provided assistant name. 
+        Delete an assistant based on the provided assistant name.
         """
-        success = False
         self.get_assistant_attributes()
-        assistant_data = self.assistant_attributes.get(f'{self.name}')
-        if assistant_data is None: 
-            logging.debug(f"{self.name} doesn't exist")
-        else:
+        assistant_data = self.assistant_attributes.get(self.name)
+        if assistant_data:
             command = input(f'Are you sure you would like to delete {self.name}? (y/N) ')
-            if command == 'y':
+            if command.lower() == 'y':
                 self.client.beta.assistants.delete(assistant_id=assistant_data.get('id'))
-                success = True 
                 logging.debug(f"{self.name} deleted.")
-        return success 
-    
-if __name__=="__main__":
-    CoreAssistant()
+                return True
+        else:
+            logging.debug(f"{self.name} doesn't exist")
+        return False
 
-    # EXAMPLE USAGE
-    # core_assistant = CoreAssistant(assistant_name="Cover Letter Writing Assistant")
-    
-    # CREATING:
-    # core_assistant.create_new_assistant()
-    # core_assistant.get_assistant_attributes(limit=1)
-    # print(core_assistant.assistant_attributes)
-
-    # DELETING:
-    # core_assistant.delete()
-    # core_assistant.get_assistant_attributes(limit=1)
-    # print(core_assistant.assistant_attributes)
+if __name__ == "__main__":
+    core_assistant = CoreAssistant("Cover Letter Writing Assistant")
