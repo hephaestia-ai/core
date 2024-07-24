@@ -1,5 +1,5 @@
 import argparse
-from src.core.core import Core
+from core.core import Core
 
 def main():
     parser = argparse.ArgumentParser(description="Core API behavior methods")

@@ -2,8 +2,8 @@ from cowgirl_ai.error_handler import error_handler
 from cowgirl_ai.vectors.vector_interactions import VectorInteractions
 from cowgirl_ai.search.search import Search
 
-from src.core.assistant.core_assistant import CoreAssistant
-from src.config import ConfigOpenAI
+from core.assistant.core_assistant import CoreAssistant
+from config import ConfigOpenAI
 
 import logging
 import time

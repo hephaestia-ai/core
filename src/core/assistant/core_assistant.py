@@ -1,4 +1,4 @@
-from src.config import ConfigOpenAI
+from config import ConfigOpenAI
 import logging
 
 class CoreAssistant(ConfigOpenAI):

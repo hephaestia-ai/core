@@ -1,4 +1,4 @@
-from src.core.assistant.core_assistant import CoreAssistant
+from core.assistant.core_assistant import CoreAssistant
 import logging
 
 logging.basicConfig(level=logging.INFO, datefmt="%Y-%m-%d", format="%(levelname)s - %(message)s")
