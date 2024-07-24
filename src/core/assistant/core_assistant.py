@@ -12,15 +12,12 @@ class CoreAssistant(ConfigOpenAI):
         super().__init__()
         self.name = assistant_name
         self.model = "gpt-4o-mini"
-        self.response_format = 'auto'
-        self.description = 'You are a cover letter writing assistant'
-        self.instructions = (
-            "Your duties are to process provided job description from the user "
-            "and write a targeted cover letter to bypass ATS that is also tailored to their skill set."
-        )
         self.temperature = 0.1
         self.tools = [{"type": "code_interpreter"}]
         self.assistant_attributes = {}
+        self.response_format = 'auto'
+        self.description = None
+        self.instructions = None
 
     def get_assistant_attributes(self, limit=None):
         """
