@@ -1,5 +1,5 @@
 from cowgirl_ai.error_handler import error_handler
-from config import ConfigOpenAI
+from core.assistant.config import ConfigOpenAI
 import logging
 
 class CoreAssistant(ConfigOpenAI):
