@@ -1,6 +1,16 @@
 # Cowgirl AI Core
 
-Configures the assistant, assistant interface, vector, file management, directory and extension mechanisms
+Configures the assistant, assistant interface, vector, file management, directory and extension mechanisms for CLI useage. 
+
+Available commands: 
+```zsh 
+
+    % cowgirl-ai-core create_assistant "Assistant Name"
+    % cowgirl-ai-core create_vector "Vector Name"
+    % cowgirl-ai-core update_assistant "Assistant Name" "Vector Name"
+    % cowgirl-ai-core upload_files "/path/to/directory" "ext" "Vector Name" 
+
+```
 
 
 Development notes: 
